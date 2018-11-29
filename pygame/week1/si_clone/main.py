@@ -1,7 +1,7 @@
 import settings
 import si_game
 
-
+#if you can see this, Hi from DrKittyKat!
 #create our settings. Incase we need to load diffrent values
 settings = settings.Settings()
 
