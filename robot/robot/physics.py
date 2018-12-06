@@ -34,11 +34,18 @@ class PhysicsEngine(object):
         # -> Remember, in the constructor we inverted the left motors, so
         #    invert the motor values here too!
         try: 
-            l_motor = -hal_data['CAN'][1]['value']
-            r_motor = -hal_data['CAN'][0]['value']
             
-            #print(hal_data['CAN'])
-            
+            if hal_data['CAN'][1]['inverted']:
+                l_motor =-hal_data['CAN'][1]['value']
+            else:
+                l_motor = hal_data['CAN'][1]['value']
+
+            if hal_data['CAN'][0]['inverted']:
+                r_motor = -hal_data['CAN'][0]['value']
+            else:
+                r_motor = hal_data['CAN'][0]['value']
+
+            tm_diff = tm_diff * 0.5
             speed,rot = drivetrains.two_motor_drivetrain(l_motor,r_motor)
             self.physics_controller.drive(speed,rot, tm_diff)
         except:
