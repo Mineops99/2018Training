@@ -36,3 +36,24 @@ class DriveTrainSub(Subsystem):
 
     def initDefaultCommand(self):
         self.setDefaultCommand(JoystickDrive(self.robot))
+        
+class HealthMonitor(Subsystem):
+    def __init__(self):
+        super().__init__("HMS")
+        self.warnVoltage = 12
+        self.critVoltage = 11
+        self.robot = wpilib.command.Command.getRobot()
+    def setVoltageLimit(self,voltage):
+        self.minVoltage = voltage
+    def rumbleOnLimits(self, voltage = True):
+        
+        if voltage and (self.warnVoltage > 0 or self.critVoltage > 0):
+            volts  = self.robot.pdp.getVoltage()
+            if volts < self.critVoltage:
+                print("Voltage CRITICAL limit at ", volts)
+                self.setRumbles(1.0)
+            elif volts < self.warnVoltage:
+                print("Voltage warning at ", volts)
+                self.setRumbles(0.5)
+            else:
+                self.setRumbles(0.0)
